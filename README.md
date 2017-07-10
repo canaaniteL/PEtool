@@ -10,6 +10,7 @@
 	选择需要加壳的软件A后，程序会读取壳子程序B，并在B中增加一个节（大小为A的文件size）存放A。
 	最终生成的程序放在"c：\testShell"，文件名与A相同。
 	使用的加壳方式只能防静态分析，对于动态分析没有杀伤力。
+	
 	*** 解壳主要原理 ***：
 	* 1.判断是否新加了节。如果是，跳转到第二步。否则退出。
 	* 2.将新加入的节读取到堆中。
@@ -17,7 +18,9 @@
 	* 4.卸载B的内存。
 	* 5.在B进程分配内存空间，位置为A程序的ImageBase处，大小为A的SizeofImage。
 	* 6.重新修改context，context的ebx为新分配的内存空间首地址【也就是A的imagebase】,eax为A程序的AddressOfEntryPoint。
-	* 7.context重设一下，再把B程序ResumeThread,拉起来。
+	* 7.context重设一下，再把B程序主线程ResumeThread重新运行起来。
+	具体壳代码参考我的另一个项目==>PEShellFrame
 	
 	
 * c.DLL注入
+	* 1.远程线程注入
