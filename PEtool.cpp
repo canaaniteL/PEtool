@@ -9,7 +9,7 @@
 #pragma comment(lib,"comctl32.lib")	
 #include "PSAPI.H"
 #pragma comment(lib, "Psapi.lib") 
-//Ö÷½ø³ÌµÄÊµÀı
+//ä¸»è¿›ç¨‹çš„å®ä¾‹
 HINSTANCE hInstanceMain;
 
 HWND hListModuleInfo;
@@ -19,68 +19,68 @@ TCHAR szFileName[MAX_PATH];
 TCHAR PEFilePATH[MAX_PATH];
 TCHAR PEProtectPATH[MAX_PATH];
 TCHAR* ShellPath="C://testShell//EXEProtect.exe";
-//PE½âÎö½á¹¹Ö¸Õë£¬¶¨Òå³ÉÈ«¾ÖµÄ£¬ÆäËûµÄ´°¿ÚÒ²¿ÉÒÔÊ¹ÓÃ
+//PEè§£æç»“æ„æŒ‡é’ˆï¼Œå®šä¹‰æˆå…¨å±€çš„ï¼Œå…¶ä»–çš„çª—å£ä¹Ÿå¯ä»¥ä½¿ç”¨
 PE_Parse* pPE_P;
 
 VOID Init_Parse_PE_Import(HWND hDlg)
 {
 	LV_COLUMN lv;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&lv,0,sizeof(LV_COLUMN));
-	//»ñÈ¡IDC_LIST_PROCESS¾ä±ú
+	//è·å–IDC_LIST_PROCESSå¥æŸ„
 	HWND hListDllInfo=GetDlgItem(hDlg,IDC_LIST_DLLINFO);
-	//ÉèÖÃÕûĞĞÑ¡ÖĞ
+	//è®¾ç½®æ•´è¡Œé€‰ä¸­
 	SendMessage(hListDllInfo,LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT,LVS_EX_FULLROWSELECT);
-	//µÚÒ»ÁĞ
+	//ç¬¬ä¸€åˆ—
 	lv.mask=LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
 
-	lv.pszText=TEXT("DLLÃû");
-	lv.cx=85;              //ÁĞ¿í
+	lv.pszText=TEXT("DLLå");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=0;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,0,(DWORD)&lv);
 
-	//µÚ¶şÁĞ
+	//ç¬¬äºŒåˆ—
 	lv.pszText=TEXT("OriginalFirstThunk");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=1;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,1,(DWORD)&lv);
 
-	//µÚ3ÁĞ
-	lv.pszText=TEXT("Ê±¼ä´Á");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬3åˆ—
+	lv.pszText=TEXT("æ—¶é—´æˆ³");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=2;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,2,(DWORD)&lv);
 
-	//µÚ4ÁĞ
+	//ç¬¬4åˆ—
 	lv.pszText=TEXT("ForwarderChain");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=3;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,3,(DWORD)&lv);
 
-	//µÚ5ÁĞ
+	//ç¬¬5åˆ—
 	lv.pszText=TEXT("Name");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=4;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,4,(DWORD)&lv);
 
-	//µÚ6ÁĞ
+	//ç¬¬6åˆ—
 	lv.pszText=TEXT("FirstThunk");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=5;
 	SendMessage(hListDllInfo,LVM_INSERTCOLUMN,5,(DWORD)&lv);
 
 	HWND hListDLLAPIInfo=GetDlgItem(hDlg,IDC_LIST_DLL_APINFO);
-	//ÉèÖÃÕûĞĞÑ¡ÖĞ
+	//è®¾ç½®æ•´è¡Œé€‰ä¸­
 //	SendMessage(hListDLLAPIInfo,LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT,LVS_EX_FULLROWSELECT);
-	//µÚ1ÁĞ
+	//ç¬¬1åˆ—
 	lv.pszText=TEXT("Hint");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=0;
 	SendMessage(hListDLLAPIInfo,LVM_INSERTCOLUMN,0,(DWORD)&lv);
 
-	//µÚ2ÁĞ
+	//ç¬¬2åˆ—
 	lv.pszText=TEXT("ApiName");
-	lv.cx=85;              //ÁĞ¿í
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=1;
 	SendMessage(hListDLLAPIInfo,LVM_INSERTCOLUMN,1,(DWORD)&lv);
 
@@ -91,116 +91,116 @@ VOID Init_Parse_PE_Import(HWND hDlg)
 VOID Init_Parse_PE_SECTION(HWND hDlg)
 {
 	LV_COLUMN lv;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&lv,0,sizeof(LV_COLUMN));
-	//»ñÈ¡IDC_LIST_PROCESS¾ä±ú
+	//è·å–IDC_LIST_PROCESSå¥æŸ„
 	hListModuleInfo=GetDlgItem(hDlg,IDC_LIST_SECTION);
-	//ÉèÖÃÕûĞĞÑ¡ÖĞ
+	//è®¾ç½®æ•´è¡Œé€‰ä¸­
 	SendMessage(hListModuleInfo,LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT,LVS_EX_FULLROWSELECT);
-	//µÚÒ»ÁĞ
+	//ç¬¬ä¸€åˆ—
 	lv.mask=LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
-	lv.pszText=TEXT("½ÚÃû³Æ");
-	lv.cx=85;              //ÁĞ¿í
+	lv.pszText=TEXT("èŠ‚åç§°");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=0;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,0,(DWORD)&lv);
 
-	//µÚ¶şÁĞ
-	lv.pszText=TEXT("ÄÚ´æÆ«ÒÆ");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬äºŒåˆ—
+	lv.pszText=TEXT("å†…å­˜åç§»");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=1;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,1,(DWORD)&lv);
 
-	//µÚ3ÁĞ
-	lv.pszText=TEXT("ÄÚ´æ´óĞ¡");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬3åˆ—
+	lv.pszText=TEXT("å†…å­˜å¤§å°");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=2;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,2,(DWORD)&lv);
 
-	//µÚ4ÁĞ
-	lv.pszText=TEXT("ÎÄ¼şÆ«ÒÆ");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬4åˆ—
+	lv.pszText=TEXT("æ–‡ä»¶åç§»");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=3;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,3,(DWORD)&lv);
 
-	//µÚ5ÁĞ
-	lv.pszText=TEXT("ÄÚ´æ´óĞ¡");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬5åˆ—
+	lv.pszText=TEXT("å†…å­˜å¤§å°");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=4;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,4,(DWORD)&lv);
 
-	//µÚ6ÁĞ
-	lv.pszText=TEXT("½ÚÊôĞÔ");
-	lv.cx=85;              //ÁĞ¿í
+	//ç¬¬6åˆ—
+	lv.pszText=TEXT("èŠ‚å±æ€§");
+	lv.cx=85;              //åˆ—å®½
 	lv.iSubItem=5;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,5,(DWORD)&lv);
 
-	//ÍùlistÀïÃæĞ´Èë½ÚĞÅÏ¢
+	//å¾€listé‡Œé¢å†™å…¥èŠ‚ä¿¡æ¯
 
 	LV_ITEM vitem;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&vitem,0,sizeof(LV_ITEM));
 	vitem.mask=LVIF_TEXT;
 	DWORD SectionNum=pPE_P->pPEHeader->NumberOfSections;
 	for(DWORD i=0;i<SectionNum;i++)
 	{
-		//»ñÈ¡½ÚµÄÃû×Ö
+		//è·å–èŠ‚çš„åå­—
 		TCHAR pSecName[10];
 		memset(pSecName,0,10);
 		sprintf(pSecName,"%s",pPE_P->pSectionHeader[i].Name);
 	
-		//»ñÈ¡½ÚµÄÄÚ´æÆ«ÒÆµØÖ·
+		//è·å–èŠ‚çš„å†…å­˜åç§»åœ°å€
 		TCHAR pSecMisc[10];
 		memset(pSecMisc,0,10);
 		sprintf(pSecMisc,"%08X",pPE_P->pSectionHeader[i].VirtualAddress);
 
-		//»ñÈ¡½ÚµÄÄÚ´æ´óĞ¡
+		//è·å–èŠ‚çš„å†…å­˜å¤§å°
 		TCHAR pSecVA[10];
 		memset(pSecVA,0,10);
 		sprintf(pSecVA,"%08X",pPE_P->pSectionHeader[i].Misc.VirtualSize);
 
-		//»ñÈ¡½ÚµÄÎÄ¼şÆ«ÒÆµØÖ·
+		//è·å–èŠ‚çš„æ–‡ä»¶åç§»åœ°å€
 		TCHAR pSecFOA[10];
 		memset(pSecFOA,0,10);
 		sprintf(pSecFOA,"%08X",pPE_P->pSectionHeader[i].PointerToRawData);
 
-		//»ñÈ¡½ÚµÄÎÄ¼ş´óĞ¡
+		//è·å–èŠ‚çš„æ–‡ä»¶å¤§å°
 		TCHAR pSecRawSize[10];
 		memset(pSecRawSize,0,10);
 		sprintf(pSecRawSize,"%08X",pPE_P->pSectionHeader[i].SizeOfRawData);
 
-		//»ñÈ¡½ÚÊôĞÔ
+		//è·å–èŠ‚å±æ€§
 		TCHAR pSecCharc[10];
 		memset(pSecCharc,0,10);
 		sprintf(pSecCharc,"%08X",pPE_P->pSectionHeader[i].Characteristics);
 
 		vitem.pszText=pSecName;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=0;           //µÚ¼¸ÁĞ
-		SendMessage(hListModuleInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //Ö»ÓĞµÚÒ»ÁĞÊÇinsertitem,ºóÃæµÄ¶¼ÊÇsetitem
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=0;           //ç¬¬å‡ åˆ—
+		SendMessage(hListModuleInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //åªæœ‰ç¬¬ä¸€åˆ—æ˜¯insertitem,åé¢çš„éƒ½æ˜¯setitem
 
 		vitem.pszText=pSecMisc;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=1;           //µÚ¼¸ÁĞ
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=1;           //ç¬¬å‡ åˆ—
 		SendMessage(hListModuleInfo,LVM_SETITEM,1,(DWORD)&vitem);
 
 		vitem.pszText=pSecVA;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=2;           //µÚ¼¸ÁĞ
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=2;           //ç¬¬å‡ åˆ—
 		SendMessage(hListModuleInfo,LVM_SETITEM,2,(DWORD)&vitem);
 
 		vitem.pszText=pSecFOA;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=3;           //µÚ¼¸ÁĞ
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=3;           //ç¬¬å‡ åˆ—
 		SendMessage(hListModuleInfo,LVM_SETITEM,3,(DWORD)&vitem);
 
 		vitem.pszText=pSecRawSize;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=4;           //µÚ¼¸ÁĞ
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=4;           //ç¬¬å‡ åˆ—
 		SendMessage(hListModuleInfo,LVM_SETITEM,4,(DWORD)&vitem);
 
 		vitem.pszText=pSecCharc;
-		vitem.iItem=0;          //µÚ¼¸ĞĞ
-		vitem.iSubItem=5;           //µÚ¼¸ÁĞ
+		vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+		vitem.iSubItem=5;           //ç¬¬å‡ åˆ—
 		SendMessage(hListModuleInfo,LVM_SETITEM,5,(DWORD)&vitem);
 	}
 
@@ -217,10 +217,9 @@ VOID Init_Parse_PE_Directory(HWND hwnd)
 		SetWindowText(GetDlgItem(hwnd,IDC_EDIT_DIRECTORY_R_0+i*2),pStr_R);
 		SetWindowText(GetDlgItem(hwnd,IDC_EDIT_DIRECTORY_S_0+i*2),pStr_S);
 	}
-	//pPE_P->~PE_Parse();     Õâ¸öµØ·½²»ÊÇÈÃÄãÏÔÊ½µ÷ÓÃµÄ£¬new³öÀ´µÄÒ²ÊÇÔÚ¶ÑÉÏÃæ    ĞèÒªÔÙ¸´Ï°Ò»ÏÂĞéº¯Êı±í
 }
 
-//×ÊÔ´±í´¦Àíº¯Êı
+//èµ„æºè¡¨å¤„ç†å‡½æ•°
 BOOL CALLBACK PERelocDlgProc(  									
 							IN  HWND hwnd,  		
 							IN  UINT uMsg,  		
@@ -231,7 +230,7 @@ BOOL CALLBACK PERelocDlgProc(
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
-		{//´ò¿ªPEÎÄ¼ş»ñÈ¡Ïà¹ØĞÅÏ¢
+		{//æ‰“å¼€PEæ–‡ä»¶è·å–ç›¸å…³ä¿¡æ¯
 			//Init_Parse_PE_Section(hwnd);
 			//Init_Parse_PE_Import(hwnd);
 			pPE_P->ParRelocTree(hwnd);
@@ -263,7 +262,7 @@ BOOL CALLBACK PEImportDlgProc(
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
-		{//´ò¿ªPEÎÄ¼ş»ñÈ¡Ïà¹ØĞÅÏ¢
+		{//æ‰“å¼€PEæ–‡ä»¶è·å–ç›¸å…³ä¿¡æ¯
 			//Init_Parse_PE_Section(hwnd);
 			Init_Parse_PE_Import(hwnd);
 			break;
@@ -299,7 +298,7 @@ BOOL CALLBACK PESectionDlgProc(
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
-		{//´ò¿ªPEÎÄ¼ş»ñÈ¡Ïà¹ØĞÅÏ¢
+		{//æ‰“å¼€PEæ–‡ä»¶è·å–ç›¸å…³ä¿¡æ¯
 			//Init_Parse_PE_Section(hwnd);
 			Init_Parse_PE_SECTION(hwnd);
 			break;
@@ -315,7 +314,7 @@ BOOL CALLBACK PESectionDlgProc(
 
 }
 
-//Ä¿Â¼ĞÅÏ¢´°¿ÚµÄÏûÏ¢´¦Àíº¯Êı
+//ç›®å½•ä¿¡æ¯çª—å£çš„æ¶ˆæ¯å¤„ç†å‡½æ•°
 BOOL CALLBACK PEDirctoryDlgProc(  									
 							IN  HWND hwnd,  		
 							IN  UINT uMsg,  		
@@ -352,7 +351,7 @@ BOOL CALLBACK PEDirctoryDlgProc(
 			break;
 		}
 	case WM_INITDIALOG:
-		{//´ò¿ªPEÎÄ¼ş»ñÈ¡Ïà¹ØĞÅÏ¢
+		{//æ‰“å¼€PEæ–‡ä»¶è·å–ç›¸å…³ä¿¡æ¯
 			Init_Parse_PE_Directory(hwnd);
 			break;
 		}
@@ -368,7 +367,7 @@ BOOL CALLBACK PEDirctoryDlgProc(
 }  	
 VOID Init_Parse_PE(HWND hwnd)
 {
-	pPE_P=new PE_Parse(PEFilePATH);//ÈçºÎÊÍ·ÅÕâ¸öµØ·½´´½¨µÄÄÚ´æ£¿
+	pPE_P=new PE_Parse(PEFilePATH);//æ³¨æ„é‡Šæ”¾å†…å­˜
 	//OutputDebugStringF("%d\n",pPE_P->pPEHeader->NumberOfSections);
 	TCHAR pStrEntry[10];
 	TCHAR pStrImageBase[10];
@@ -376,8 +375,6 @@ VOID Init_Parse_PE(HWND hwnd)
 	sprintf(pStrImageBase,"%08X",pPE_P->pOptionalHeader->ImageBase);
 	SetWindowText(GetDlgItem(hwnd,IDC_EDIT_INTRY),pStrEntry);
 	SetWindowText(GetDlgItem(hwnd,IDC_EDIT_IMAGEBASE),pStrImageBase);
-	//pPE_P->~PE_Parse();     Õâ¸öµØ·½²»ÊÇÈÃÄãÏÔÊ½µ÷ÓÃµÄ£¬new³öÀ´µÄÒ²ÊÇÔÚ¶ÑÉÏÃæ    ĞèÒªÔÙ¸´Ï°Ò»ÏÂĞéº¯Êı±í
-	//delete pPE_P;
 }
 VOID updateModule(DWORD processID)
 {
@@ -397,7 +394,7 @@ VOID updateModule(DWORD processID)
         for (DWORD i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ )
         {
 			LV_ITEM vitem;
-			//³õÊ¼»¯
+			//åˆå§‹åŒ–
 			memset(&vitem,0,sizeof(LV_ITEM));
 			vitem.mask=LVIF_TEXT;
             TCHAR szModName[MAX_PATH];
@@ -419,18 +416,18 @@ VOID updateModule(DWORD processID)
 				sprintf(pStrDLLSize,"%08X",ModuleInfo.SizeOfImage);
 
 				vitem.pszText=szModName;
-				vitem.iItem=0;          //µÚ¼¸ĞĞ
-				vitem.iSubItem=0;           //µÚ¼¸ÁĞ
-				SendMessage(hListModuleInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //Ö»ÓĞµÚÒ»ÁĞÊÇinsertitem,ºóÃæµÄ¶¼ÊÇsetitem
+				vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+				vitem.iSubItem=0;           //ç¬¬å‡ åˆ—
+				SendMessage(hListModuleInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //åªæœ‰ç¬¬ä¸€åˆ—æ˜¯insertitem,åé¢çš„éƒ½æ˜¯setitem
 
 				vitem.pszText=pStrImagBase;
-				vitem.iItem=0;          //µÚ¼¸ĞĞ
-				vitem.iSubItem=1;           //µÚ¼¸ÁĞ
+				vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+				vitem.iSubItem=1;           //ç¬¬å‡ åˆ—
 				SendMessage(hListModuleInfo,LVM_SETITEM,1,(DWORD)&vitem);
 
 				vitem.pszText=pStrDLLSize;
-				vitem.iItem=0;          //µÚ¼¸ĞĞ
-				vitem.iSubItem=2;           //µÚ¼¸ÁĞ
+				vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+				vitem.iSubItem=2;           //ç¬¬å‡ åˆ—
 				SendMessage(hListModuleInfo,LVM_SETITEM,2,(DWORD)&vitem);
             }
         }
@@ -442,7 +439,7 @@ VOID UpdateProcessList(DWORD processID,DWORD row)
 {	
 	
 	LV_ITEM vitem;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&vitem,0,sizeof(LV_ITEM));
 	vitem.mask=LVIF_TEXT;
 	TCHAR pStrID[10];
@@ -479,28 +476,28 @@ VOID UpdateProcessList(DWORD processID,DWORD row)
 	sprintf(pStrImagSize,"%08x",ModuleInfo.SizeOfImage);
 	// update the processlist name and identifier.
 	vitem.pszText=szProcessName;
-	vitem.iItem=0;          //µÚ¼¸ĞĞ
-	vitem.iSubItem=0;           //µÚ¼¸ÁĞ
-	SendMessage(hListProcessInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //Ö»ÓĞµÚÒ»ÁĞÊÇinsertitem,ºóÃæµÄ¶¼ÊÇsetitem
+	vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+	vitem.iSubItem=0;           //ç¬¬å‡ åˆ—
+	SendMessage(hListProcessInfo,LVM_INSERTITEM,0,(DWORD)&vitem);  //åªæœ‰ç¬¬ä¸€åˆ—æ˜¯insertitem,åé¢çš„éƒ½æ˜¯setitem
 
 	vitem.pszText=pStrID;
-	vitem.iItem=0;          //µÚ¼¸ĞĞ
-	vitem.iSubItem=1;           //µÚ¼¸ÁĞ
+	vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+	vitem.iSubItem=1;           //ç¬¬å‡ åˆ—
 	SendMessage(hListProcessInfo,LVM_SETITEM,1,(DWORD)&vitem);
 
 	vitem.pszText=pStrDLLBase;
-	vitem.iItem=0;          //µÚ¼¸ĞĞ
-	vitem.iSubItem=2;           //µÚ¼¸ÁĞ
+	vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+	vitem.iSubItem=2;           //ç¬¬å‡ åˆ—
 	SendMessage(hListProcessInfo,LVM_SETITEM,2,(DWORD)&vitem);
 
 	vitem.pszText=pStrImagSize;
-	vitem.iItem=0;          //µÚ¼¸ĞĞ
-	vitem.iSubItem=3;           //µÚ¼¸ÁĞ
+	vitem.iItem=0;          //ç¬¬å‡ è¡Œ
+	vitem.iSubItem=3;           //ç¬¬å‡ åˆ—
 	SendMessage(hListProcessInfo,LVM_SETITEM,3,(DWORD)&vitem);
 	CloseHandle( hProcess );
 
 }		
-//WIN32 ¾ÍÊÇÏûÏ¢Çı¶¯
+//WIN32 å°±æ˜¯æ¶ˆæ¯é©±åŠ¨
 VOID EnumModules(HWND hListProcess,WPARAM wParam,LPARAM lParam)
 {
 	DWORD dwRowId;
@@ -510,20 +507,20 @@ VOID EnumModules(HWND hListProcess,WPARAM wParam,LPARAM lParam)
 	memset(&lv,0,sizeof(LV_ITEM));
 	memset(szPid,0,0x20);
 	DWORD processID;
-	//»ñÈ¡Ñ¡ÖĞĞĞ            dwRowIdÎªĞĞºÅ
+	//è·å–é€‰ä¸­è¡Œ            dwRowIdä¸ºè¡Œå·
 	dwRowId=SendMessage(hListProcess,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
 	if(dwRowId==-1)
 	{
-		MessageBox(NULL,"³ö´íÁË°¡£¡","....",MB_OK);
+		MessageBox(NULL,"å‡ºé”™äº†å•Šï¼","....",MB_OK);
 		return;
 	}
-	//»ñÈ¡µÚ¼¸ÁĞ
-	lv.iSubItem=1;         //Òª»ñÈ¡µÄÁĞ
-	lv.pszText=szPid;      //Ö¸¶¨´æ´¢²éÑ¯½á¹ûµÄ»º³åÇø
-	lv.cchTextMax=0x20;    //Ö¸¶¨»º³åÇø´óĞ¡
+	//è·å–ç¬¬å‡ åˆ—
+	lv.iSubItem=1;         //è¦è·å–çš„åˆ—
+	lv.pszText=szPid;      //æŒ‡å®šå­˜å‚¨æŸ¥è¯¢ç»“æœçš„ç¼“å†²åŒº
+	lv.cchTextMax=0x20;    //æŒ‡å®šç¼“å†²åŒºå¤§å°
 	SendMessage(hListProcess,LVM_GETITEMTEXT,dwRowId,(DWORD)&lv);
 	sscanf(szPid,"%x",&processID);
-	//¸ù¾İpidµÄÖµµ÷ÓÃAPIº¯Êı,²¢¸üĞÂmodulelist
+	//æ ¹æ®pidçš„å€¼è°ƒç”¨APIå‡½æ•°,å¹¶æ›´æ–°modulelist
 	//UpdateModuleList(processID);
 	//OutputDebugStringF( "\nProcess ID: %s %d\n", szPid,processID);
 	updateModule(processID);
@@ -532,14 +529,14 @@ VOID EnumModules(HWND hListProcess,WPARAM wParam,LPARAM lParam)
 
 VOID enumProcess()
 {
-	//µ÷ÓÃAPI
+	//è°ƒç”¨API
 	
 	DWORD aProcesses[1024], cbNeeded, cProcesses;
     DWORD i;
 
     if ( !EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ) )
     {
-		MessageBox(NULL,"½ø³Ì³õÊ¼»¯´íÎó","EXIT",MB_OK);
+		MessageBox(NULL,"è¿›ç¨‹åˆå§‹åŒ–é”™è¯¯","EXIT",MB_OK);
         return;
     }
 
@@ -565,33 +562,33 @@ VOID enumProcess()
 VOID InitProcessListView(HWND hDlg)
 {
 	LV_COLUMN lv;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&lv,0,sizeof(LV_COLUMN));
-	//»ñÈ¡IDC_LIST_PROCESS¾ä±ú
+	//è·å–IDC_LIST_PROCESSå¥æŸ„
 	hListProcessInfo=GetDlgItem(hDlg,IDC_LIST_PROCESS);
-	//ÉèÖÃÕûĞĞÑ¡ÖĞ
+	//è®¾ç½®æ•´è¡Œé€‰ä¸­
 	SendMessage(hListProcessInfo,LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT,LVS_EX_FULLROWSELECT);
-	//µÚÒ»ÁĞ
+	//ç¬¬ä¸€åˆ—
 	lv.mask=LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
-	lv.pszText=TEXT("½ø³Ì");
-	lv.cx=150;              //ÁĞ¿í
+	lv.pszText=TEXT("è¿›ç¨‹");
+	lv.cx=150;              //åˆ—å®½
 	lv.iSubItem=0;
 	SendMessage(hListProcessInfo,LVM_INSERTCOLUMN,0,(DWORD)&lv);
 
-	//µÚ¶şÁĞ
+	//ç¬¬äºŒåˆ—
 	lv.pszText=TEXT("PID");
-	lv.cx=100;              //ÁĞ¿í
+	lv.cx=100;              //åˆ—å®½
 	lv.iSubItem=1;
 	SendMessage(hListProcessInfo,LVM_INSERTCOLUMN,1,(DWORD)&lv);
 
-		//µÚ3ÁĞ
-	lv.pszText=TEXT("¾µÏñ»ùÖ·");
-	lv.cx=110;              //ÁĞ¿í
+		//ç¬¬3åˆ—
+	lv.pszText=TEXT("é•œåƒåŸºå€");
+	lv.cx=110;              //åˆ—å®½
 	lv.iSubItem=2;
 	SendMessage(hListProcessInfo,LVM_INSERTCOLUMN,2,(DWORD)&lv);
-		//µÚ4ÁĞ
-	lv.pszText=TEXT("¾µÏñ´óĞ¡");
-	lv.cx=120;              //ÁĞ¿í
+		//ç¬¬4åˆ—
+	lv.pszText=TEXT("é•œåƒå¤§å°");
+	lv.cx=120;              //åˆ—å®½
 	lv.iSubItem=3;
 	SendMessage(hListProcessInfo,LVM_INSERTCOLUMN,3,(DWORD)&lv);
 	
@@ -601,28 +598,28 @@ VOID InitProcessListView(HWND hDlg)
 VOID InitModuleListView(HWND hDlg)
 {
 	LV_COLUMN lv;
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(&lv,0,sizeof(LV_COLUMN));
-	//»ñÈ¡IDC_LIST_PROCESS¾ä±ú
+	//è·å–IDC_LIST_PROCESSå¥æŸ„
 	hListModuleInfo=GetDlgItem(hDlg,IDC_LIST_MODULE);
-	//ÉèÖÃÕûĞĞÑ¡ÖĞ
+	//è®¾ç½®æ•´è¡Œé€‰ä¸­
 	SendMessage(hListModuleInfo,LVM_SETEXTENDEDLISTVIEWSTYLE,LVS_EX_FULLROWSELECT,LVS_EX_FULLROWSELECT);
-	//µÚÒ»ÁĞ
+	//ç¬¬ä¸€åˆ—
 	lv.mask=LVCF_TEXT|LVCF_WIDTH|LVCF_SUBITEM;
-	lv.pszText=TEXT("Ä£¿éÃû³Æ");
-	lv.cx=200;              //ÁĞ¿í
+	lv.pszText=TEXT("æ¨¡å—åç§°");
+	lv.cx=200;              //åˆ—å®½
 	lv.iSubItem=0;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,0,(DWORD)&lv);
 
-	//µÚ¶şÁĞ
-	lv.pszText=TEXT("Ä£¿éÎ»ÖÃ");
-	lv.cx=150;              //ÁĞ¿í
+	//ç¬¬äºŒåˆ—
+	lv.pszText=TEXT("æ¨¡å—ä½ç½®");
+	lv.cx=150;              //åˆ—å®½
 	lv.iSubItem=1;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,1,(DWORD)&lv);
 
-	//µÚ3ÁĞ
-	lv.pszText=TEXT("Ä£¿é´óĞ¡");
-	lv.cx=150;              //ÁĞ¿í
+	//ç¬¬3åˆ—
+	lv.pszText=TEXT("æ¨¡å—å¤§å°");
+	lv.cx=150;              //åˆ—å®½
 	lv.iSubItem=2;
 	SendMessage(hListModuleInfo,LVM_INSERTCOLUMN,2,(DWORD)&lv);
 	
@@ -665,7 +662,7 @@ BOOL CALLBACK PECheckDlgProc(
 			break;
 		}
 	case WM_INITDIALOG:
-		{//´ò¿ªPEÎÄ¼ş»ñÈ¡Ïà¹ØĞÅÏ¢
+		{//æ‰“å¼€PEæ–‡ä»¶è·å–ç›¸å…³ä¿¡æ¯
 			Init_Parse_PE(hwnd);
 			//HWND hhh=GetDlgItem(hwnd,IDC_EDIT_INTRY);          
 
@@ -687,7 +684,7 @@ BOOL CALLBACK PECheckDlgProc(
 	return FALSE;
 }
 
-//Ïß³Ìº¯Êı£¬ÓÃÓÚ¼Ó¿Ç
+//çº¿ç¨‹å‡½æ•°ï¼Œç”¨äºåŠ å£³
 DWORD WINAPI ThreadProcShell(				
 			     LPVOID lpParameter   // thread data		
 			    )
@@ -701,36 +698,36 @@ DWORD WINAPI ThreadProcShell(
 	TCHAR* ProtectPath=(TCHAR*)lpParameter;
 	dwProPESize = ReadFileToBuffer(ProtectPath,&pProtectFileBuf);
 	if(!pProtectFileBuf){
-		printf("¶ÁÈ¡ĞèÒª±£»¤µÄ³ÌĞò»º³åÇøÊ§°Ü\n");
-		::MessageBox(0,"¡¾¼Ó¿ÇÊ§°Ü-1¡¿",ProtectPath,MB_OK);
+		printf("è¯»å–éœ€è¦ä¿æŠ¤çš„ç¨‹åºç¼“å†²åŒºå¤±è´¥\n");
+		::MessageBox(0,"ã€åŠ å£³å¤±è´¥-1ã€‘",ProtectPath,MB_OK);
 		return -1;
 	}
-	//¼ÓÃÜ£¨Ê¡ÂÔ£©
+	//åŠ å¯†ï¼ˆçœç•¥ï¼‰
 	/*
-	TODO:¼ÓÃÜ
+	TODO:åŠ å¯†
 	*/
-	//Shell³ÌĞòÖĞÔö¼Ó½Ú£¬²¢½«¼ÓÃÜµÄexe·Åµ½¸Ã½ÚÖĞ
+	//Shellç¨‹åºä¸­å¢åŠ èŠ‚ï¼Œå¹¶å°†åŠ å¯†çš„exeæ”¾åˆ°è¯¥èŠ‚ä¸­
 	DWORD dwShellSize=ReadFileToBuffer(ShellPath,&pFileBuffer);
 	if(!pFileBuffer){
-		printf("ÎÄ¼ş->»º³åÇøÊ§°Ü\n");
+		printf("æ–‡ä»¶->ç¼“å†²åŒºå¤±è´¥\n");
 		free(pProtectFileBuf);
-		::MessageBox(0,"¡¾¼Ó¿ÇÊ§°Ü-2¡¿",ProtectPath,MB_OK);
+		::MessageBox(0,"ã€åŠ å£³å¤±è´¥-2ã€‘",ProtectPath,MB_OK);
 		return -2;
 	}
 	if(!AddSecion(pFileBuffer,&pNewBuffer,pProtectFileBuf,dwProPESize,dwShellSize))
 	{
-		printf("Ôö¼Ó½ÚÊ§°Ü£¡\n");
+		printf("å¢åŠ èŠ‚å¤±è´¥ï¼\n");
 		free(pFileBuffer);
 		free(pProtectFileBuf);
-		::MessageBox(0,"¡¾¼Ó¿ÇÊ§°Ü-3¡¿",ProtectPath,MB_OK);
+		::MessageBox(0,"ã€åŠ å£³å¤±è´¥-3ã€‘",ProtectPath,MB_OK);
 		return -3;
 	}
-	//´æÅÌ
+	//å­˜ç›˜
 	MemeryToFile(pNewBuffer,dwShellSize+dwProPESize,FILEPATH_OUT);
 	free(pFileBuffer);
 	free(pProtectFileBuf);
 	free(pNewBuffer);
-	::MessageBox(0,"¡¾¼Ó¿Ç³É¹¦¡¿",ProtectPath,MB_OK);
+	::MessageBox(0,"ã€åŠ å£³æˆåŠŸã€‘",ProtectPath,MB_OK);
 	return 0;
 
 }
@@ -751,7 +748,7 @@ BOOL CALLBACK PEShellDlgProc(
 			case IDC_BUTTON_SHELL:
 				{
 					//DialogBox(hInstanceMain,MAKEINTRESOURCE(IDD_DIALOG_SECTION),hwnd,PESectionDlgProc);
-					//´´½¨Ïß³ÌÈ¥¼Ó¿Ç			
+					//åˆ›å»ºçº¿ç¨‹å»åŠ å£³			
 					HANDLE hThread = ::CreateThread(NULL, 0, ThreadProcShell, 				
 						(LPVOID)PEProtectPATH, 0, NULL);	
 					CloseHandle(hThread);
@@ -790,7 +787,7 @@ BOOL CALLBACK MainDlgProc(
 	OPENFILENAME stOpenFile_Protct;
 	switch(uMsg)								
 	{								
-		//´°¿ÚÏûÏ¢	
+		//çª—å£æ¶ˆæ¯	
 	case WM_INITDIALOG:
 			InitProcessListView(hwnd);
 			InitModuleListView(hwnd);
@@ -798,7 +795,7 @@ BOOL CALLBACK MainDlgProc(
 	case WM_CLOSE:
 		{
 			EndDialog(hwnd,0);
-			if(NULL!=pPE_P)//°ÑpPE_PÊÍ·ÅÁË
+			if(NULL!=pPE_P)//æŠŠpPE_Pé‡Šæ”¾äº†
 			{
 				delete pPE_P;
 				pPE_P=NULL;
@@ -821,7 +818,7 @@ BOOL CALLBACK MainDlgProc(
 			case IDC_BUTTON_ABOUT:
 				{
 				
-					MessageBox(NULL,"±ğÂÒµãZzz","¡¾¾¯¸æ¡¿",MB_OK);
+					MessageBox(NULL,"åˆ«ä¹±ç‚¹Zzz","ã€è­¦å‘Šã€‘",MB_OK);
 					return true;
 				
 				}
@@ -837,7 +834,7 @@ BOOL CALLBACK MainDlgProc(
 					stOpenFile.lpstrFile=PEFilePATH;
 					stOpenFile.nMaxFile=MAX_PATH;
 					GetOpenFileName(&stOpenFile);
-					//MessageBox(NULL,szFileName,"Ñ¡ÖĞµÄÎÄ¼şÎª",MB_OK);
+					//MessageBox(NULL,szFileName,"é€‰ä¸­çš„æ–‡ä»¶ä¸º",MB_OK);
 					DialogBox(hInstanceMain,MAKEINTRESOURCE(IDD_DIALOG_PECHECK),hwnd,PECheckDlgProc);
 					return true;
 			
@@ -854,7 +851,7 @@ BOOL CALLBACK MainDlgProc(
 				stOpenFile_Protct.lpstrFile=PEProtectPATH;
 				stOpenFile_Protct.nMaxFile=MAX_PATH;
 				GetOpenFileName(&stOpenFile_Protct);
-				//MessageBox(NULL,szFileName,"Ñ¡ÖĞµÄÎÄ¼şÎª",MB_OK);
+				//MessageBox(NULL,szFileName,"é€‰ä¸­çš„æ–‡ä»¶ä¸º",MB_OK);
 				DialogBox(hInstanceMain,MAKEINTRESOURCE(IDD_DIALOG_SHELL),hwnd,PEShellDlgProc);
 				return true;
 		
@@ -862,7 +859,7 @@ BOOL CALLBACK MainDlgProc(
 			case IDC_BUTTON_EXIT:
 				{
 					EndDialog(hwnd,0);
-					if(NULL!=pPE_P)//°ÑpPE_PÊÍ·ÅÁË
+					if(NULL!=pPE_P)//æŠŠpPE_Pé‡Šæ”¾äº†
 					{
 						delete pPE_P;
 						pPE_P=NULL;
